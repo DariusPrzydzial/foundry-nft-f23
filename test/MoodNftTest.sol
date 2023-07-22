@@ -63,9 +63,33 @@ contract MoodNftTest is StdCheats, Test {
         vm.prank(USER);
         moodNft.flipMood(0);
 
-        assert(
-            keccak256(abi.encodePacked(moodNft.tokenURI(0))) ==
-                keccak256(abi.encodePacked(SAD_MOOD_URI))
+        assertEq(
+            keccak256(abi.encodePacked(moodNft.tokenURI(0))),
+            keccak256(abi.encodePacked(SAD_MOOD_URI))
         );
+    }
+
+    function testFlipTokenToHappy() public {
+        vm.prank(USER);
+        moodNft.mintNft();
+
+        vm.prank(USER);
+        moodNft.flipMood(0);
+        vm.prank(USER);
+        moodNft.flipMood(0);
+
+        assertEq(
+            keccak256(abi.encodePacked(moodNft.tokenURI(0))),
+            keccak256(abi.encodePacked(HAPPY_MOOD_URI))
+        );
+    }
+
+    function testViewTokenURI() public {
+        vm.prank(USER);
+        moodNft.mintNft();
+        console.log(moodNft.tokenURI(0));
+        vm.prank(USER);
+        moodNft.flipMood(0);
+        console.log(moodNft.tokenURI(0));
     }
 }
